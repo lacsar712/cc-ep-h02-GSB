@@ -108,6 +108,7 @@ import {
   recordMetric,
 } from '../api/client'
 import { useAuthStore } from '../stores/auth'
+import { canWriteRunCommands } from '../utils/roleWritePolicy'
 
 const route = useRoute()
 const auth = useAuthStore()
@@ -125,7 +126,7 @@ const artifact = reactive({
   media_type: 'application/octet-stream',
 })
 
-const canWrite = computed(() => run.value?.status === 'running') // BUG: auditor sees writers
+const canWrite = computed(() => canWriteRunCommands(auth.role, run.value?.status))
 const statusLabel = computed(() => {
   const m = { running: '进行中', completed: '已完成', aborted: '已中止' }
   return m[run.value?.status] || run.value?.status

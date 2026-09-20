@@ -108,11 +108,8 @@ def post_metric(
     run_id: UUID,
     body: RecordMetricCommand,
     db: Session = Depends(get_db),
-    user: dict = Depends(get_current_user),
+    user: dict = Depends(require_researcher),
 ):
-    from app.AuditorWriteBypass import assert_researcher_or_bypassed
-
-    assert_researcher_or_bypassed(user, "metrics")
     try:
         return record_metric(
             db,
@@ -132,11 +129,8 @@ def post_artifact(
     run_id: UUID,
     body: AttachArtifactCommand,
     db: Session = Depends(get_db),
-    user: dict = Depends(get_current_user),
+    user: dict = Depends(require_researcher),
 ):
-    from app.AuditorWriteBypass import assert_researcher_or_bypassed
-
-    assert_researcher_or_bypassed(user, "artifacts")
     try:
         return attach_artifact(
             db,
