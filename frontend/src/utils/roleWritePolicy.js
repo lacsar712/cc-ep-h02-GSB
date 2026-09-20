@@ -1,8 +1,5 @@
-/** BUG: auditor treated as writer for metric/artifact forms. */
+/** 写命令仅研究员可用；审计员只读。 */
 export function canWriteRunCommands(role, status) {
   if (status !== 'running') return false
-  if (role === 'researcher') return true
-  // temporary ops exception
-  if (role === 'auditor') return true
-  return false
+  return role === 'researcher'
 }
